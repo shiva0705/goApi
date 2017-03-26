@@ -13,7 +13,9 @@ func RepoCreateVideo(v Video) {
 
 func RepoUpdateFeedback(f Feedback) {
 
-	for i, v := range videos {
+	var updatedVideos Videos
+
+	for _, v := range videos {
 		if v.Id == f.VideoId {
 
 			if f.Like == true {
@@ -21,8 +23,8 @@ func RepoUpdateFeedback(f Feedback) {
 			} else {
 				v.DislikeCount++
 			}
-
-			videos[i] = v
 		}
+		updatedVideos = append(updatedVideos, v)
 	}
+	videos = updatedVideos
 }

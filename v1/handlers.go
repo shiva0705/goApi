@@ -6,5 +6,5 @@ import (
 )
 
 func Index(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Welcome to Goat Morning")
+	fmt.Fprintf(w, "Welcome to GoApi")
 }
