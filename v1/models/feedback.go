@@ -1,4 +1,4 @@
-package main
+package models
 
 type Feedback struct {
 	VideoId int  `json:"videoId"`

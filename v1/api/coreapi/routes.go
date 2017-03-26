@@ -1,6 +1,10 @@
-package main
+package coreapi
 
-import "net/http"
+import (
+	"net/http"
+
+	"github.com/shiva0705/goApi/v1/api/handlers"
+)
 
 type Route struct {
 	Name        string
@@ -16,18 +20,18 @@ var routes = Routes{
 		"Index",
 		"GET",
 		"/",
-		Index,
+		handlers.Index,
 	},
 	Route{
 		"videos",
 		"GET",
 		"/videos",
-		Get10VideosEndpoint,
+		handlers.Get10VideosEndpoint,
 	},
 	Route{
 		"feedback",
 		"POST",
 		"/feedback",
-		FeedbackEndpoint,
+		handlers.FeedbackEndpoint,
 	},
 }
