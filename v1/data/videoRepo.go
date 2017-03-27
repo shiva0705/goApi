@@ -44,7 +44,7 @@ func GetVideos(db *sql.DB) models.Videos {
 	return videos
 }
 
-func UpdateFeedback(db *sql.DB, f models.Feedback) {
+func UpdateFeedback(db *sql.DB, f models.Feedback) (e error) {
 	var video models.Video
 
 	err := db.QueryRow("Select id, name, url, like_count, dislike_count from person where id=?", f.VideoId).Scan(&video.Id, &video.Name, &video.Url, &video.LikeCount, &video.DislikeCount)
@@ -60,4 +60,6 @@ func UpdateFeedback(db *sql.DB, f models.Feedback) {
 	checkErr(err)
 	_, err = stmt.Exec(video.LikeCount, video.DislikeCount, video.Id)
 	checkErr(err)
+
+	return
 }

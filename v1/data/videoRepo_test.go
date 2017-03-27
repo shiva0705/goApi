@@ -31,9 +31,39 @@ func TestGetVideos(t *testing.T) {
 	checkErr(err)
 	defer db.Close()
 
-	mock.ExpectQuery("Select")
+	var columns = []string{"id", "name", "url", "like_count", "dislike_count"}
+	mock.ExpectQuery("Select").WillReturnRows(sqlmock.NewRows(columns).AddRow(0, "t", "t", 0, 0))
+
+	var videos models.Videos
+	videos = GetVideos(db)
+
+	if videos == nil {
+		t.Errorf("error as no videos were returned")
+	}
 
 	if err := mock.ExpectationsWereMet(); err != nil {
 		t.Errorf("there were unfulfiled expectations: %s", err)
 	}
+
+}
+
+func TestUpdateFeedback(t *testing.T) {
+	db, mock, err := sqlmock.New()
+	checkErr(err)
+	defer db.Close()
+
+	var columns = []string{"id", "name", "url", "like_count", "dislike_count"}
+	mock.ExpectQuery("Select").WillReturnRows(sqlmock.NewRows(columns).AddRow(0, "t", "t", 0, 0))
+	mock.ExpectPrepare("Update")
+	mock.ExpectExec("Update").WithArgs(1, 0, 0).WillReturnResult(sqlmock.NewResult(0, 1))
+
+	var feedback = models.Feedback{VideoId: 0, Like: true}
+	if err := UpdateFeedback(db, feedback); err != nil {
+		t.Errorf("error while updating feedback: %s", err)
+	}
+
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("there were unfulfiled expectations: %s", err)
+	}
+
 }
