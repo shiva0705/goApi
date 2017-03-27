@@ -27,9 +27,7 @@ func addVideo(db *sql.DB, video models.Video) (err error) {
 	return
 }
 
-func GetVideos() models.Videos {
-	var db = getDBHadle()
-	defer db.Close()
+func GetVideos(db *sql.DB) models.Videos {
 
 	rows, err := db.Query("Select * from person")
 	checkErr(err)
@@ -43,15 +41,10 @@ func GetVideos() models.Videos {
 		checkErr(err)
 	}
 
-	defer rows.Close()
-
 	return videos
 }
 
-func UpdateFeedback(f models.Feedback) {
-	var db = getDBHadle()
-	defer db.Close()
-
+func UpdateFeedback(db *sql.DB, f models.Feedback) {
 	var video models.Video
 
 	err := db.QueryRow("Select id, name, url, like_count, dislike_count from person where id=?", f.VideoId).Scan(&video.Id, &video.Name, &video.Url, &video.LikeCount, &video.DislikeCount)

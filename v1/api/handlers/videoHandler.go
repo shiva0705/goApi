@@ -11,7 +11,10 @@ func Get10VideosEndpoint(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json;charset=UTF-8")
 	w.WriteHeader(http.StatusOK)
-	if err := json.NewEncoder(w).Encode(data.GetVideos()); err != nil {
+
+	var db = data.DbHandle()
+	defer db.Close()
+	if err := json.NewEncoder(w).Encode(data.GetVideos(db)); err != nil {
 		panic(err)
 	}
 }

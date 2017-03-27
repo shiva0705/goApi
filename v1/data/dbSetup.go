@@ -11,7 +11,7 @@ func init() {
 }
 
 func buildTables() {
-	var db = getDBHadle()
+	var db = DbHandle()
 	defer db.Close()
 
 	// create person table
@@ -30,7 +30,7 @@ func buildTables() {
 }
 
 func populateVideos() {
-	var db = getDBHadle()
+	var db = DbHandle()
 	defer db.Close()
 
 	addVideo(db, models.Video{Id: 1, Name: "Ultimate Dog Tease", Url: "https://www.youtube.com/watch?v=nGeKSiCQkPw", LikeCount: 0, DislikeCount: 0})

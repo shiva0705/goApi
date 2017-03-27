@@ -2,7 +2,7 @@ package data
 
 import "database/sql"
 
-func getDBHadle() *sql.DB {
+func DbHandle() *sql.DB {
 	db, err := sql.Open("mysql", "goApiUser:password@/goApi")
 	checkErr(err)
 

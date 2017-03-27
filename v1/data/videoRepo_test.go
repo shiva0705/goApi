@@ -25,3 +25,15 @@ func TestAddVideo(t *testing.T) {
 		t.Errorf("there were unfulfiled expectations: %s", err)
 	}
 }
+
+func TestGetVideos(t *testing.T) {
+	db, mock, err := sqlmock.New()
+	checkErr(err)
+	defer db.Close()
+
+	mock.ExpectQuery("Select")
+
+	if err := mock.ExpectationsWereMet(); err != nil {
+		t.Errorf("there were unfulfiled expectations: %s", err)
+	}
+}
