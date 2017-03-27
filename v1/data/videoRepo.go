@@ -1,20 +1,30 @@
 package data
 
 import (
+	"database/sql"
+
 	"github.com/shiva0705/goApi/v1/models"
 
 	_ "github.com/go-sql-driver/mysql"
 )
 
-func addVideo(video models.Video) {
-	var db = getDBHadle()
-	defer db.Close()
-
-	stmt, err := db.Prepare("Insert Into person Values (?, ?, ?, ?, ?)")
+func addVideo(db *sql.DB, video models.Video) (err error) {
+	tx, err := db.Begin()
 	checkErr(err)
 
-	_, err = stmt.Exec(0, video.Name, video.Url, video.LikeCount, video.DislikeCount)
-	checkErr(err)
+	defer func() {
+		switch err {
+		case nil:
+			err = tx.Commit()
+		default:
+			tx.Rollback()
+		}
+	}()
+
+	if _, err = tx.Exec("Insert Into person Values (?, ?, ?, ?, ?)", 0, video.Name, video.Url, video.LikeCount, video.DislikeCount); err != nil {
+		return
+	}
+	return
 }
 
 func GetVideos() models.Videos {
